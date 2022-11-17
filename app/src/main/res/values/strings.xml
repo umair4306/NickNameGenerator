@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Nickname Generator: Name Style</string>
+    <string name="a_nick_generator">NickName Generator</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_surname">Enter your surname</string>
+    <string name="generate">Generate</string>
+
+
+    <string name="get_chat_sticker" translatable="false">Get Amazing chat Stickers for WhatsApp</string>
+    <string name="get_chat_sticker_desc" translatable="false">We have very Nice Stickers</string>
+</resources>
