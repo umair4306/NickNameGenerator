@@ -1,26 +1,23 @@
 package com.nickname.generator;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxAdFormat;
-import com.applovin.mediation.MaxAdViewAdListener;
-import com.applovin.mediation.MaxError;
-import com.applovin.mediation.ads.MaxAdView;
-import com.applovin.sdk.AppLovinSdkUtils;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.nicknamegenerator.R;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 
 public class OnboardingScreen extends AppCompatActivity {
 
@@ -28,7 +25,7 @@ public class OnboardingScreen extends AppCompatActivity {
     TextView heading, description;
     int currentPosition = 1;
     Button next_button;
-    private MaxAdView MRECAdview;
+    TemplateView template;
 
 
     @Override
@@ -36,12 +33,39 @@ public class OnboardingScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_screen);
 
-        MRECAdview = new MaxAdView(Constant.MREC_ADD_KEY, MaxAdFormat.MREC, this);
+
+        template = findViewById(R.id.my_template);
 
         imageView = findViewById(R.id.imageView);
         heading = findViewById(R.id.title_text);
         description = findViewById(R.id.slider_desc);
-        createMrecAd();
+
+        if (InternetConnection.checkConnection(this)) {
+            AdLoader adLoader = new AdLoader.Builder(this, Constant.NativeAd)
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            NativeTemplateStyle styles = new
+                                    NativeTemplateStyle.Builder().build();
+
+                            template.setStyles(styles);
+                            template.setNativeAd(nativeAd);
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(LoadAdError adError) {
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder()
+
+                            .build())
+                    .build();
+
+        }else{
+            template.setVisibility(View.INVISIBLE);
+        }
+
 
         if (currentPosition == 1) {
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.image1));
@@ -82,72 +106,15 @@ public class OnboardingScreen extends AppCompatActivity {
 //                        }
 //                    });
 //                }
-                }}
+                }
+            }
         });
     }
 
 
-
-
-    private void createMrecAd() {
-        MRECAdview.setListener(new MaxAdViewAdListener() {
-            @Override
-            public void onAdExpanded(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdCollapsed(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdLoaded(MaxAd ad) {
-                Log.d("onAdLoaded", "onAdLoaded: ");
-            }
-
-            @Override
-            public void onAdDisplayed(MaxAd ad) {
-                Log.d("onAdLoaded", "onAdDisplayed: ");
-            }
-
-            @Override
-            public void onAdHidden(MaxAd ad) {
-                Log.d("onAdLoaded", "onAdHidden: ");
-            }
-
-            @Override
-            public void onAdClicked(MaxAd ad) {
-                Log.d("onAdLoaded", "onAdClicked: ");
-            }
-
-            @Override
-            public void onAdLoadFailed(String adUnitId, MaxError error) {
-                Log.d("onAdLoaded", error.getMessage());
-            }
-
-            @Override
-            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-
-                Log.d("onAdLoaded", error.getMessage());
-            }
-        });
-
-        int width = AppLovinSdkUtils.dpToPx(this, 300);
-        int height = AppLovinSdkUtils.dpToPx(this, 250);
-        MRECAdview.setLayoutParams(new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
-
-        MRECAdview.setBackgroundColor(Color.WHITE);
-
-        FrameLayout layout = findViewById(R.id.mrec);
-        layout.addView(MRECAdview);
-        MRECAdview.loadAd();
-        MRECAdview.startAutoRefresh();
-
-    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MyApplication.isFirstTime = true;
+
     }
 }

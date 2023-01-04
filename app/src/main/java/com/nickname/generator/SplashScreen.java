@@ -1,13 +1,12 @@
 package com.nickname.generator;
 
-import static com.nickname.generator.MyApplication.showAdIfReady;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nicknamegenerator.R;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -28,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showAdIfReady();
+
                 Intent intent = new Intent(SplashScreen.this, OnboardingScreen.class);
                 startActivity(intent);
                 finish();

@@ -16,6 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.nicknamegenerator.R;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.nickname.generator.Constant;
+import com.nickname.generator.InternetConnection;
 
 import java.util.ArrayList;
 
@@ -40,7 +46,32 @@ public class NickNameAdapter extends RecyclerView.Adapter<NickNameAdapter.viewHo
     @Override
     public void onBindViewHolder(@NonNull NickNameAdapter.viewHolder holder, int position) {
 
+        if (position % 3 == 0) {
 
+            if (InternetConnection.checkConnection(context)) {
+
+
+                    AdLoader.Builder builder = new AdLoader.Builder(
+                            context, Constant.NativeAd);
+
+                    builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            holder.templateView.setNativeAd(nativeAd);
+                        }
+                    });
+
+                    final AdLoader adLoader = builder.build();
+                    adLoader.loadAd(new AdRequest.Builder().build());
+
+                    holder.templateView.setVisibility(View.VISIBLE);
+
+
+
+            } else {
+                holder.templateView.setVisibility(View.GONE);
+            }
+        }
         String s = list.get(position);
         holder.historyText.setText(s);
 
@@ -80,13 +111,14 @@ public class NickNameAdapter extends RecyclerView.Adapter<NickNameAdapter.viewHo
     public class viewHolder extends RecyclerView.ViewHolder {
         TextView historyText;
         ImageView copy,share;
+        TemplateView templateView;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             this.historyText = itemView.findViewById(R.id.nickName);
             this.copy = itemView.findViewById(R.id.copy);
             this.share = itemView.findViewById(R.id.share);
-
+            this.templateView = itemView.findViewById(R.id.nativeAds);
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override

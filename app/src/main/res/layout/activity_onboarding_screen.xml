@@ -17,6 +17,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/slider_desc"
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
         android:layout_marginTop="10dp"
         android:text="Amazing Stickers for whatsapp"
         android:textColor="@color/black" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,10 +42,12 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitXY" />
     </androidx.cardview.widget.CardView>
+
     <RelativeLayout
         android:id="@+id/relative"
+        android:layout_above="@+id/adsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -76,13 +80,22 @@
             android:textColor="@color/white" />
 
 
-
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/mrec"
+
+    <RelativeLayout
+        android:id="@+id/adsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relative"
-        android:layout_marginTop="15dp" />
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/my_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:gnt_template_type="@layout/gnt_medium_template_view" />
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

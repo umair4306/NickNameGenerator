@@ -16,4 +16,9 @@ public class Constant {
     public static String App_Open = "e92f7cf3ae8488ee";
     public static String Max_ID = "k6M5NTnJGpwkPtSKZe-eZAkAlOEfcw7nB1B-ayas5WK8Rl9Xprw89ufSwtGKOvMBVN-BGKx2za5dAW79ARe77H";
 
+    //Admob
+
+    public static String NativeAd = "ca-app-pub-3940256099942544/2247696110";
+    public static String InterstitialAd = "ca-app-pub-3940256099942544/1033173712";
+
 }
